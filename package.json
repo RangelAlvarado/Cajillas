@@ -1,0 +1,25 @@
+{
+  "name": "cajillas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "npx electron-packager . 'Manejador de Cajillas' --overwrite --platform=win32,linux --extra-resource='./extraResources'"
+  },
+  "build": {
+    "extraResources": [
+      "./extraResources/**"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.1.3"
+  },
+  "devDependencies": {
+    "electron-packager": "^15.4.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron": "^17.2.0"
+  }
+}
