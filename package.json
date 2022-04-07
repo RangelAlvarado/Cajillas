@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack": "npx electron-packager . 'Manejador de Cajillas' --overwrite --platform=win32,linux --extra-resource='./extraResources'"
+    "pack": "npx electron-packager . 'Manejador de Cajillas' --overwrite --platform=win32 --extra-resource='./extraResources'"
   },
   "build": {
     "extraResources": [

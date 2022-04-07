@@ -10,22 +10,26 @@ let cajillas = [
 function Start(id) {
   console.log(id)
   //let cajilla = cajillas.filter(i => i.name == id)
-  //let cajilla = cajillas.filter(function (cajilla) { return cajilla.name == id });
   let cajilla = cajillas.filter(c => c.name == id)
   cajilla = cajilla.map(c => c.IP)
   if (process.platform == 'win32') {
     let spawn = require("child_process").spawn;
 
-    let bat = spawn("cmd.exe", [
+    let adb = spawn("cmd.exe", [
+      "/c",          // Argument for cmd.exe to carry out the specified script
+      "resources\\extraResources\\adb.exe", // Path to your file
+      "connect",   // First argument
+      cajilla    // n-th argument
+  ]);
+    sleep(2);
+    let scrcpy = spawn("cmd.exe", [
     "/c",          // Argument for cmd.exe to carry out the specified script
-    process.env.PORTABLE_EXECUTABLE_DIR+"\resources\extraResources\scrcpy.exe", // Path to your file
+    "resources\\extraResources\\scrcpy.exe", // Path to your file
     "-s",   // First argument
     cajilla    // n-th argument
 ]);
-    //var child = require('child_process').exec(
-    //  '.\resources\extraResources\scrcpy.exe -s '+cajilla,
-    //)
-    console.log(child)
+    console.log(adb)
+    console.log(scrcpy)
   } else {
     var child = require('child_process').exec('scrcpy -s '+cajilla)
   }
