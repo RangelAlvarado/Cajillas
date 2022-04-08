@@ -4,13 +4,14 @@ const { dialog } = require('electron')
 //require('electron-reload')(__dirname)
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 968,
+    height: 625,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
+    resizable: false
   })
 
   win.loadFile('src/index.html')
@@ -30,3 +31,16 @@ ipcMain.handle('errorConnect', async (event) => {
   }
   dialog.showMessageBoxSync(messageBoxOptions)
 })
+
+// ipcMain.handle('loadingWindow', async (event) => {
+//   loading = new BrowserWindow({
+//     width: 400,
+//     height: 100,
+//     autoHideMenuBar: true,
+//     webPreferences: {
+//       nodeIntegration: true,
+//     },
+//   })
+
+//   win.loadFile('src/index.html')
+// })
