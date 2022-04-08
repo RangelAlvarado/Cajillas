@@ -1,5 +1,10 @@
 const { ipcRenderer } = require('electron')
-let cajillas = [
+
+const WINDOWS_ADB_PATH = 'resources\\extraResources\\adb.exe connect '
+const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
+const LINUX_ADB_PATH = 'adb connect '
+const LINUX_SCRCPY_PATH = 'scrcpy -s '
+const cajillas = [
   { name: 'ch1', IP: '192.168.1.144' },
   { name: 'ch2', IP: '172.29' },
 ]
@@ -11,32 +16,26 @@ function Start(id) {
   cajilla = cajilla.map((c) => c.IP)
   let adb, scrcpy
   if (process.platform == 'win32') {
-    //let spawn = require('child_process').spawn
-    adb = require('child_process').exec(
-      'resources\\extraResources\\adb.exe connect ' + cajilla,
-    )
-    adb.stdout.on('data', function (data) {
-      console.log(data)
-      var failed = data.split(' ')
-      if (failed[0] == 'failed' || failed[0] == 'cannot') {
-        ipcRenderer.invoke('errorConnect').then(() => {})
-      }
-    })
-    setTimeout(() => {
-      scrcpy = require('child_process').exec(
-        'resources\\extraResources\\scrcpy.exe -s ' + cajilla,
-      )
-    }, 2000)
+    adb = require('child_process').exec(WINDOWS_ADB_PATH + cajilla)
   } else {
-    adb = require('child_process').exec('adb connect ' + cajilla)
-    adb.stdout.on('data', function (data) {
-      console.log(data)
-      var failed = data.split(' ')
-      if (failed[0] == 'failed') {
-        ipcRenderer.invoke('errorConnect').then(() => {})
-      }
-    })
+    adb = require('child_process').exec(LINUX_ADB_PATH + cajilla)
   }
+  adb.stdout.on('data', function (data) {
+    console.log(data)
+    var failed = data.split(' ')
+    if (failed[0] == 'failed') {
+      ipcRenderer.invoke('errorConnect').then(() => {})
+    } else {
+      if (process.platform == 'win32') {
+        scrcpy = require('child_process').exec(WINDOWS_SCRCPY_PATH + cajilla)
+      } else {
+        scrcpy = require('child_process').exec(LINUX_SCRCPY_PATH + cajilla)
+      }
+      scrcpy.stdout.on('data', function (data) {
+        console.log(data)
+      })
+    }
+  })
 }
 
 ch1.addEventListener('click', function (event) {
