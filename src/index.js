@@ -1,42 +1,45 @@
-const electron = require('electron')
-// Enable live reload for all the files inside your project directory
-//require('electron-reload')(__dirname)
-
+const { ipcRenderer } = require('electron')
 let cajillas = [
-  { "name": "ch1", "IP": "172.29.33.53" },
-  { "name": "ch2", "IP": "172.29" },
-];
+  { name: 'ch1', IP: '192.168.1.144' },
+  { name: 'ch2', IP: '172.29' },
+]
 
 function Start(id) {
   console.log(id)
   //let cajilla = cajillas.filter(i => i.name == id)
-  let cajilla = cajillas.filter(c => c.name == id)
-  cajilla = cajilla.map(c => c.IP)
+  let cajilla = cajillas.filter((c) => c.name == id)
+  cajilla = cajilla.map((c) => c.IP)
+  let adb, scrcpy
   if (process.platform == 'win32') {
-    let spawn = require("child_process").spawn;
-
-    let adb = spawn("cmd.exe", [
-      "/c",          // Argument for cmd.exe to carry out the specified script
-      "resources\\extraResources\\adb.exe", // Path to your file
-      "connect",   // First argument
-      cajilla    // n-th argument
-  ]);
-    sleep(2);
-    let scrcpy = spawn("cmd.exe", [
-    "/c",          // Argument for cmd.exe to carry out the specified script
-    "resources\\extraResources\\scrcpy.exe", // Path to your file
-    "-s",   // First argument
-    cajilla    // n-th argument
-]);
-    console.log(adb)
-    console.log(scrcpy)
+    //let spawn = require('child_process').spawn
+    adb = require('child_process').exec(
+      'resources\\extraResources\\adb.exe connect ' + cajilla,
+    )
+    adb.stdout.on('data', function (data) {
+      console.log(data)
+      var failed = data.split(' ')
+      if (failed[0] == 'failed' || failed[0] == 'cannot') {
+        ipcRenderer.invoke('errorConnect').then(() => {})
+      }
+    })
+    setTimeout(() => {
+      scrcpy = require('child_process').exec(
+        'resources\\extraResources\\scrcpy.exe -s ' + cajilla,
+      )
+    }, 2000)
   } else {
-    var child = require('child_process').exec('scrcpy -s '+cajilla)
+    adb = require('child_process').exec('adb connect ' + cajilla)
+    adb.stdout.on('data', function (data) {
+      console.log(data)
+      var failed = data.split(' ')
+      if (failed[0] == 'failed') {
+        ipcRenderer.invoke('errorConnect').then(() => {})
+      }
+    })
   }
 }
 
 ch1.addEventListener('click', function (event) {
   id = this.id
-  //alert(app.getAppPath())
   Start(id)
 })
