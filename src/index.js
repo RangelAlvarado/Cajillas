@@ -5,8 +5,12 @@ const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
 const LINUX_ADB_PATH = 'adb connect '
 const LINUX_SCRCPY_PATH = 'scrcpy -s '
 const cajillas = [
-  { name: 'ch1', IP: '192.168.1.144' },
-  { name: 'ch2', IP: '172.29' },
+  { name: 'plvelocidad', IP: '172.29.33.224' },
+  { name: 'plaaa', IP: '172.29.33.222' },
+  { name: 'placapulco' , IP: '172.29.32.48'},
+  { name: "cnn", IP: '172.29.32.132'},
+  { name: "historych", IP: '172.29.32.190'},
+  {name: 'discovery', IP: '172.29.34.206'}
 ]
 
 function Start(id) {
@@ -23,7 +27,7 @@ function Start(id) {
   adb.stdout.on('data', function (data) {
     console.log(data)
     var failed = data.split(' ')
-    if (failed[0] == 'failed') {
+    if (failed[0] == 'failed' || failed[0] == 'cannot') {
       ipcRenderer.invoke('errorConnect').then(() => {})
     } else {
       if (process.platform == 'win32') {
@@ -31,14 +35,50 @@ function Start(id) {
       } else {
         scrcpy = require('child_process').exec(LINUX_SCRCPY_PATH + cajilla)
       }
-      scrcpy.stdout.on('data', function (data) {
+      scrcpy.stderr.on('data', function (data) {
         console.log(data)
       })
     }
   })
 }
 
-ch1.addEventListener('click', function (event) {
+cnn.addEventListener('click', function (event) {
+  id = this.id
+  cnn.innerHTML = '<i class="spinner"></i> loading...'
+  Start(id)
+  // loadingWindow();
+  
+})
+historych.addEventListener('click', function (event) {
   id = this.id
   Start(id)
+  // loadingWindow();
+  
 })
+discovery.addEventListener('click', function (event) {
+  id = this.id
+  Start(id)
+  // loadingWindow();
+  
+})
+plvelocidad.addEventListener('click', function (event) {
+  id = this.id
+  Start(id)
+  // loadingWindow();
+  
+})
+plaaa.addEventListener('click', function (event) {
+  id = this.id
+  Start(id)
+  // loadingWindow();
+  
+})
+placapulco.addEventListener('click', function (event) {
+  id = this.id
+  Start(id)
+  // loadingWindow();
+  
+})
+// function loadingWindow() {
+//   ipcRenderer.invoke('loadingWindow').then(() => {})
+// }
