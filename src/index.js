@@ -28,7 +28,9 @@ function Start(id) {
     var failed = data.split(' ')
     if (failed[0] == 'failed' || failed[0] == 'cannot') {
       document.getElementById(id).innerHTML= '&#10060';
-      ipcRenderer.invoke('errorConnect').then(() => {})
+      ipcRenderer.invoke('errorConnect').then(() => {
+        document.getElementById(id).innerHTML= idName
+      })
     } else {
       if (process.platform == 'win32') {
         scrcpy = require('child_process').exec(WINDOWS_SCRCPY_PATH + cajilla)
