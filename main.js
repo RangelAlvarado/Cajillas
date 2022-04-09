@@ -15,7 +15,7 @@ function createWindow() {
   })
 
   win.loadFile('src/index.html')
-  win.webContents.openDevTools()
+  //win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
@@ -27,7 +27,7 @@ ipcMain.handle('errorConnect', async (event) => {
     type: 'error',
     title: 'Error en la conexion',
     message:
-      'No se ha podido conectar con la cajilla\nAsegurate de estar en la misma red.\nSi es la primera vez que te conectas dale permiso a la cajilla para conectarse a tu PC',
+      'No se ha podido conectar con la cajilla\nAsegurate de estar en la misma red.\nSi es la primera vez que te conectas a la cajilla asegurate de darle permiso a la cajilla para conectarse a tu PC',
   }
   dialog.showMessageBoxSync(messageBoxOptions)
 })

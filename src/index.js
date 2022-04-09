@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron')
-
+let id,idName
 const WINDOWS_ADB_PATH = 'resources\\extraResources\\adb.exe connect '
 const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
 const LINUX_ADB_PATH = 'adb connect '
@@ -7,10 +7,10 @@ const LINUX_SCRCPY_PATH = 'scrcpy -s '
 const cajillas = [
   { name: 'plvelocidad', IP: '172.29.33.224' },
   { name: 'plaaa', IP: '172.29.33.222' },
-  { name: 'placapulco' , IP: '172.29.32.48'},
-  { name: "cnn", IP: '172.29.32.132'},
-  { name: "historych", IP: '172.29.32.190'},
-  {name: 'discovery', IP: '172.29.34.206'}
+  { name: 'placapulco' , IP: '172.29.32.48' },
+  { name: "cnn", IP: '172.29.32.132' },
+  { name: "historych", IP: '172.29.32.190' },
+  { name: 'discovery', IP: '172.29.34.206' }
 ]
 
 function Start(id) {
@@ -27,6 +27,7 @@ function Start(id) {
     console.log(data)
     var failed = data.split(' ')
     if (failed[0] == 'failed' || failed[0] == 'cannot') {
+      document.getElementById(id).innerHTML= '&#10060';
       ipcRenderer.invoke('errorConnect').then(() => {})
     } else {
       if (process.platform == 'win32') {
@@ -36,14 +37,15 @@ function Start(id) {
       }
       scrcpy.stderr.on('data', function (data) {
         console.log(data)
+        document.getElementById(id).innerHTML= '&#10004;&#65039;'
       })
-      scrcpy.on('close', function(code) {
+      scrcpy.on('close', function() {
         document.getElementById(id).innerHTML= idName
     });
     }
   })
 }
-let id,idName
+
 cnn.addEventListener('click', function (event) {
   id = this.id
   idName = "CNN"
