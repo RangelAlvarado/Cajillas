@@ -31,16 +31,3 @@ ipcMain.handle('errorConnect', async (event) => {
   }
   dialog.showMessageBoxSync(messageBoxOptions)
 })
-
-// ipcMain.handle('loadingWindow', async (event) => {
-//   loading = new BrowserWindow({
-//     width: 400,
-//     height: 100,
-//     autoHideMenuBar: true,
-//     webPreferences: {
-//       nodeIntegration: true,
-//     },
-//   })
-
-//   win.loadFile('src/index.html')
-// })

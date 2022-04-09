@@ -14,7 +14,6 @@ const cajillas = [
 ]
 
 function Start(id) {
-  console.log(id)
   //let cajilla = cajillas.filter(i => i.name == id)
   let cajilla = cajillas.filter((c) => c.name == id)
   cajilla = cajilla.map((c) => c.IP)
@@ -38,47 +37,58 @@ function Start(id) {
       scrcpy.stderr.on('data', function (data) {
         console.log(data)
       })
+      scrcpy.on('close', function(code) {
+        document.getElementById(id).innerHTML= idName
+    });
     }
   })
 }
-
+let id,idName
 cnn.addEventListener('click', function (event) {
   id = this.id
-  cnn.innerHTML = '<i class="spinner"></i> loading...'
+  idName = "CNN"
+  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id)
   // loadingWindow();
   
 })
 historych.addEventListener('click', function (event) {
   id = this.id
+  idName = "History  Channel"
+  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id)
   // loadingWindow();
   
 })
 discovery.addEventListener('click', function (event) {
   id = this.id
+  idName = "Discovery Channel"
+  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id)
   // loadingWindow();
   
 })
 plvelocidad.addEventListener('click', function (event) {
   id = this.id
+  idName = "Pluto TV Velocidad"
+  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id)
   // loadingWindow();
   
 })
 plaaa.addEventListener('click', function (event) {
   id = this.id
+  idName = "Pluto TV Lucha Libre"
+  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id)
   // loadingWindow();
   
 })
 placapulco.addEventListener('click', function (event) {
   id = this.id
+  idName = "Pluto TV Acapulco Shore"
+  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id)
   // loadingWindow();
   
 })
-// function loadingWindow() {
-//   ipcRenderer.invoke('loadingWindow').then(() => {})
-// }
