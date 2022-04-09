@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron')
-let id,idName
+let id
 const WINDOWS_ADB_PATH = 'resources\\extraResources\\adb.exe connect '
 const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
 const LINUX_ADB_PATH = 'adb connect '
@@ -13,7 +13,7 @@ const cajillas = [
   { name: 'discovery', IP: '172.29.34.206' }
 ]
 
-function Start(id) {
+function Start(id,idName) {
   //let cajilla = cajillas.filter(i => i.name == id)
   let cajilla = cajillas.filter((c) => c.name == id)
   cajilla = cajilla.map((c) => c.IP)
@@ -52,47 +52,35 @@ cnn.addEventListener('click', function (event) {
   id = this.id
   idName = "CNN"
   document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id)
-  // loadingWindow();
-  
+  Start(id,idName)
 })
 historych.addEventListener('click', function (event) {
   id = this.id
   idName = "History  Channel"
   document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id)
-  // loadingWindow();
-  
+  Start(id,idName)
 })
 discovery.addEventListener('click', function (event) {
   id = this.id
   idName = "Discovery Channel"
   document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id)
-  // loadingWindow();
-  
+  Start(id,idName)
 })
 plvelocidad.addEventListener('click', function (event) {
   id = this.id
   idName = "Pluto TV Velocidad"
   document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id)
-  // loadingWindow();
-  
+  Start(id,idName)
 })
 plaaa.addEventListener('click', function (event) {
   id = this.id
   idName = "Pluto TV Lucha Libre"
   document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id)
-  // loadingWindow();
-  
+  Start(id,idName)
 })
 placapulco.addEventListener('click', function (event) {
   id = this.id
   idName = "Pluto TV Acapulco Shore"
   document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id)
-  // loadingWindow();
-  
+  Start(id,idName)
 })
