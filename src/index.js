@@ -5,16 +5,15 @@ const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
 const LINUX_ADB_PATH = 'adb connect '
 const LINUX_SCRCPY_PATH = 'scrcpy -s '
 const cajillas = [
-  { name: 'plvelocidad', IP: '172.29.33.224' },
+  { name: 'plvelocidad', IP: '192.168.1.144' },
   { name: 'plaaa', IP: '172.29.33.222' },
-  { name: 'placapulco' , IP: '172.29.32.48' },
-  { name: "cnn", IP: '172.29.32.132' },
-  { name: "historych", IP: '172.29.32.190' },
-  { name: 'discovery', IP: '172.29.34.206' }
+  { name: 'placapulco', IP: '172.29.32.48' },
+  { name: 'cnn', IP: '172.29.32.132' },
+  { name: 'historych', IP: '172.29.32.190' },
+  { name: 'discovery', IP: '172.29.34.206' },
 ]
 
-function Start(id,idName) {
-  //let cajilla = cajillas.filter(i => i.name == id)
+function Start(id, idName) {
   let cajilla = cajillas.filter((c) => c.name == id)
   cajilla = cajilla.map((c) => c.IP)
   let adb, scrcpy
@@ -27,9 +26,10 @@ function Start(id,idName) {
     console.log(data)
     var failed = data.split(' ')
     if (failed[0] == 'failed' || failed[0] == 'cannot') {
-      document.getElementById(id).innerHTML= '&#10060';
+      document.getElementById(id).innerHTML = '&#10060'
       ipcRenderer.invoke('errorConnect').then(() => {
-        document.getElementById(id).innerHTML= idName
+        document.getElementById(id).disabled = false
+        document.getElementById(id).innerHTML = idName
       })
     } else {
       if (process.platform == 'win32') {
@@ -38,49 +38,72 @@ function Start(id,idName) {
         scrcpy = require('child_process').exec(LINUX_SCRCPY_PATH + cajilla)
       }
       scrcpy.stderr.on('data', function (data) {
-        console.log(data)
-        document.getElementById(id).innerHTML= '&#10004;&#65039;'
+        failed = data.split(' ')
+        if (failed[2] == 'connection') {
+          document.getElementById(id).innerHTML = '&#10060'
+          ipcRenderer.invoke('errorConnect').then(() => {
+            document.getElementById(id).disabled = false
+            document.getElementById(id).innerHTML = idName
+          })
+        } else if (failed[0] != 'ERROR:') {
+          document.getElementById(id).innerHTML = '&#10004;&#65039;'
+        }
       })
-      scrcpy.on('close', function() {
-        document.getElementById(id).innerHTML= idName
-    });
+      scrcpy.on('close', function (data) {
+        if (data != 1) {
+          document.getElementById(id).disabled = false
+          document.getElementById(id).innerHTML = idName
+        }
+      })
     }
   })
 }
 
 cnn.addEventListener('click', function (event) {
   id = this.id
-  idName = "CNN"
-  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id,idName)
+  idName = 'CNN'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
 })
 historych.addEventListener('click', function (event) {
   id = this.id
-  idName = "History  Channel"
-  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id,idName)
+  idName = 'History  Channel'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
 })
 discovery.addEventListener('click', function (event) {
   id = this.id
-  idName = "Discovery Channel"
-  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id,idName)
+  idName = 'Discovery Channel'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
 })
 plvelocidad.addEventListener('click', function (event) {
   id = this.id
-  idName = "Pluto TV Velocidad"
-  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id,idName)
+  idName = 'Pluto TV Velocidad'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
 })
 plaaa.addEventListener('click', function (event) {
   id = this.id
-  idName = "Pluto TV Lucha Libre"
-  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id,idName)
+  idName = 'Pluto TV Lucha Libre'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
 })
 placapulco.addEventListener('click', function (event) {
   id = this.id
-  idName = "Pluto TV Acapulco Shore"
-  document.getElementById(id).innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
-  Start(id,idName)
+  idName = 'Pluto TV Acapulco Shore'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
 })
