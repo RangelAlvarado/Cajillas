@@ -11,11 +11,12 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    resizable: false
+    resizable: false,
+    icon: __dirname + '/logo.png',
   })
 
   win.loadFile('src/index.html')
-  //win.webContents.openDevTools()
+  win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
