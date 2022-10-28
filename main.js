@@ -1,25 +1,34 @@
-const { app, BrowserWindow } = require('electron')
-
+const { app, BrowserWindow, ipcMain } = require('electron')
+const { dialog } = require('electron')
+// Enable live reload for all the files inside your project directory
+//require('electron-reload')(__dirname)
 function createWindow() {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 400,
-    height: 200,
+  win = new BrowserWindow({
+    width: 968,
+    height: 625,
+    autoHideMenuBar: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    resizable: false,
+    icon: __dirname + '/logo.png',
   })
 
-  //use bytenode to convert js files to jsc
-  const bytenode = require('bytenode')
-  let main = bytenode.compileFile({
-    filename: './temp.js',
-    output: './main.jsc',
-  })
-  let index = bytenode.compileFile({
-    filename: 'src/temp.js',
-    output: 'src/index.jsc',
-  })
-  //convert other Node.js files as required
+  win.loadFile('src/index.html')
+  //win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
   createWindow()
+})
+
+ipcMain.handle('errorConnect', async (event) => {
+  const messageBoxOptions = {
+    type: 'error',
+    title: 'Error en la conexion',
+    message:
+      'No se ha podido conectar con la cajilla\nAsegurate de estar en la misma red.\nSi es la primera vez que te conectas a la cajilla asegurate de darle permiso a la cajilla para conectarse a tu PC',
+  }
+  dialog.showMessageBoxSync(messageBoxOptions)
 })
