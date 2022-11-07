@@ -5,12 +5,16 @@ const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
 const LINUX_ADB_PATH = 'adb connect '
 const LINUX_SCRCPY_PATH = 'scrcpy -s '
 const cajillas = [
-  { name: 'plvelocidad', IP: '192.168.1.144' },
-  { name: 'plaaa', IP: '172.29.33.222' },
-  { name: 'placapulco', IP: '172.29.32.48' },
-  { name: 'cnn', IP: '172.29.32.132' },
-  { name: 'historych', IP: '172.29.32.190' },
-  { name: 'discovery', IP: '172.29.34.206' },
+  { name: 'escaleras1', IP: '172.29.32.23' },
+  { name: 'escaleras2', IP: '172.29.32.35' },
+  { name: 'bistro1', IP: '172.29.32.51' },
+  { name: 'bistro2', IP: '172.29.32.77' },
+  { name: 'discoverpb', IP: '172.29.36.66' },
+  { name: 'recepcion4', IP: '172.29.35.17' },
+  { name: 'recepcion3', IP: '172.29.32.14' },
+  { name: 'recepcion2', IP: '172.29.32.86' },
+  { name: 'recepcion1', IP: '172.29.32.11' },
+  { name: 'fusion', IP: '172.29.32.224'},
 ]
 
 function Start(id, idName) {
@@ -59,49 +63,85 @@ function Start(id, idName) {
   })
 }
 
-cnn.addEventListener('click', function (event) {
+escaleras1.addEventListener('click', function (event) {
   id = this.id
-  idName = 'CNN'
+  idName = 'Escaleras 1'
   document.getElementById(id).disabled = true
   document.getElementById(id).innerHTML =
     "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id, idName)
 })
-historych.addEventListener('click', function (event) {
+escaleras2.addEventListener('click', function (event) {
   id = this.id
-  idName = 'History  Channel'
+  idName = 'Escaleras 2'
   document.getElementById(id).disabled = true
   document.getElementById(id).innerHTML =
     "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id, idName)
 })
-discovery.addEventListener('click', function (event) {
+bistro1.addEventListener('click', function (event) {
   id = this.id
-  idName = 'Discovery Channel'
+  idName = 'Bistro Afuera 1'
   document.getElementById(id).disabled = true
   document.getElementById(id).innerHTML =
     "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id, idName)
 })
-plvelocidad.addEventListener('click', function (event) {
+bistro2.addEventListener('click', function (event) {
   id = this.id
-  idName = 'Pluto TV Velocidad'
+  idName = 'Bistro Afuera 2'
   document.getElementById(id).disabled = true
   document.getElementById(id).innerHTML =
     "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id, idName)
 })
-plaaa.addEventListener('click', function (event) {
+discoverpb.addEventListener('click', function (event) {
   id = this.id
-  idName = 'Pluto TV Lucha Libre'
+  idName = 'Discover PB'
   document.getElementById(id).disabled = true
   document.getElementById(id).innerHTML =
     "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
   Start(id, idName)
 })
-placapulco.addEventListener('click', function (event) {
+recepcion1.addEventListener('click', function (event) {
   id = this.id
-  idName = 'Pluto TV Acapulco Shore'
+  idName = 'Recepcion 1'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
+})
+
+recepcion2.addEventListener('click', function (event) {
+  id = this.id
+  idName = 'Recepcion 2'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
+})
+
+recepcion3.addEventListener('click', function (event) {
+  id = this.id
+  idName = 'Recepcion 3'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
+})
+
+recepcion4.addEventListener('click', function (event) {
+  id = this.id
+  idName = 'Recepcion 4'
+  document.getElementById(id).disabled = true
+  document.getElementById(id).innerHTML =
+    "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
+  Start(id, idName)
+})
+
+fusion.addEventListener('click', function (event) {
+  id = this.id
+  idName = 'Fusion'
   document.getElementById(id).disabled = true
   document.getElementById(id).innerHTML =
     "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
