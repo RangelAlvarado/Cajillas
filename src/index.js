@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron')
+const wifiName = require('wifi-name');
 let id
 const WINDOWS_ADB_PATH = 'resources\\extraResources\\adb.exe connect '
 const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
@@ -14,12 +15,19 @@ const cajillas = [
   { name: 'recepcion3', IP: '172.29.32.14' },
   { name: 'recepcion2', IP: '172.29.32.86' },
   { name: 'recepcion1', IP: '172.29.32.11' },
-  { name: 'fusion', IP: '172.29.32.224'},
+  { name: 'proyectorpb', IP: '172.29.32.224'},
 ]
 
 function Start(id, idName) {
-  let cajilla = cajillas.filter((c) => c.name == id)
-  cajilla = cajilla.map((c) => c.IP)
+  try{
+    if (wifiName.sync() != 'decawifi')
+      ipcRenderer.invoke('errorNoDecawifi').then(() => {
+      document.getElementById(id).disabled = false
+      document.getElementById(id).innerHTML = idName
+    })
+  else{
+    let cajilla = cajillas.filter((c) => c.name == id)
+    cajilla = cajilla.map((c) => c.IP)
   let adb, scrcpy
   if (process.platform == 'win32') {
     adb = require('child_process').exec(WINDOWS_ADB_PATH + cajilla)
@@ -62,7 +70,13 @@ function Start(id, idName) {
     }
   })
 }
-
+  }catch(e){
+    ipcRenderer.invoke('errorNoDecawifi').then(() => {
+      document.getElementById(id).disabled = false
+      document.getElementById(id).innerHTML = idName
+    })
+  }
+}
 escaleras1.addEventListener('click', function (event) {
   id = this.id
   idName = 'Escaleras 1'
@@ -139,9 +153,9 @@ recepcion4.addEventListener('click', function (event) {
   Start(id, idName)
 })
 
-fusion.addEventListener('click', function (event) {
+proyectorpb.addEventListener('click', function (event) {
   id = this.id
-  idName = 'Fusion'
+  idName = 'Proyector PB'
   document.getElementById(id).disabled = true
   document.getElementById(id).innerHTML =
     "<div class='spinner-border' role='status'><span class='sr-only'></span></div>"
