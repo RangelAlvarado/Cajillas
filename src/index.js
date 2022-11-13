@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron')
-const wifiName = require('wifi-name');
+const wifiName = require('wifi-name')
 let id
 const WINDOWS_ADB_PATH = 'resources\\extraResources\\adb.exe connect '
 const WINDOWS_SCRCPY_PATH = 'resources\\extraResources\\scrcpy.exe -s '
@@ -15,62 +15,64 @@ const cajillas = [
   { name: 'recepcion3', IP: '172.29.32.14' },
   { name: 'recepcion2', IP: '172.29.32.86' },
   { name: 'recepcion1', IP: '172.29.32.11' },
-  { name: 'proyectorpb', IP: '172.29.32.224'},
+  { name: 'proyectorpb', IP: '172.29.32.224' },
 ]
 
 function Start(id, idName) {
-  try{
+  try {
     if (wifiName.sync() != 'decawifi')
       ipcRenderer.invoke('errorNoDecawifi').then(() => {
-      document.getElementById(id).disabled = false
-      document.getElementById(id).innerHTML = idName
-    })
-  else{
-    let cajilla = cajillas.filter((c) => c.name == id)
-    cajilla = cajilla.map((c) => c.IP)
-  let adb, scrcpy
-  if (process.platform == 'win32') {
-    adb = require('child_process').exec(WINDOWS_ADB_PATH + cajilla)
-  } else {
-    adb = require('child_process').exec(LINUX_ADB_PATH + cajilla)
-  }
-  adb.stdout.on('data', function (data) {
-    console.log(data)
-    var failed = data.split(' ')
-    if (failed[0] == 'failed' || failed[0] == 'cannot') {
-      document.getElementById(id).innerHTML = '&#10060'
-      ipcRenderer.invoke('errorConnect').then(() => {
         document.getElementById(id).disabled = false
         document.getElementById(id).innerHTML = idName
       })
-    } else {
+    else {
+      let cajilla = cajillas.filter((c) => c.name == id)
+      cajilla = cajilla.map((c) => c.IP)
+      let adb, scrcpy
       if (process.platform == 'win32') {
-        scrcpy = require('child_process').exec(WINDOWS_SCRCPY_PATH + cajilla)
+        adb = require('child_process').exec(WINDOWS_ADB_PATH + cajilla)
       } else {
-        scrcpy = require('child_process').exec(LINUX_SCRCPY_PATH + cajilla)
+        adb = require('child_process').exec(LINUX_ADB_PATH + cajilla)
       }
-      scrcpy.stderr.on('data', function (data) {
-        failed = data.split(' ')
-        if (failed[2] == 'connection') {
+      adb.stdout.on('data', function (data) {
+        console.log(data)
+        var failed = data.split(' ')
+        if (failed[0] == 'failed' || failed[0] == 'cannot') {
           document.getElementById(id).innerHTML = '&#10060'
           ipcRenderer.invoke('errorConnect').then(() => {
             document.getElementById(id).disabled = false
             document.getElementById(id).innerHTML = idName
           })
-        } else if (failed[0] != 'ERROR:') {
-          document.getElementById(id).innerHTML = '&#10004;&#65039;'
-        }
-      })
-      scrcpy.on('close', function (data) {
-        if (data != 1) {
-          document.getElementById(id).disabled = false
-          document.getElementById(id).innerHTML = idName
+        } else {
+          if (process.platform == 'win32') {
+            scrcpy = require('child_process').exec(
+              WINDOWS_SCRCPY_PATH + cajilla,
+            )
+          } else {
+            scrcpy = require('child_process').exec(LINUX_SCRCPY_PATH + cajilla)
+          }
+          scrcpy.stderr.on('data', function (data) {
+            failed = data.split(' ')
+            if (failed[2] == 'connection') {
+              document.getElementById(id).innerHTML = '&#10060'
+              ipcRenderer.invoke('errorConnect').then(() => {
+                document.getElementById(id).disabled = false
+                document.getElementById(id).innerHTML = idName
+              })
+            } else if (failed[0] != 'ERROR:') {
+              document.getElementById(id).innerHTML = '&#10004;&#65039;'
+            }
+          })
+          scrcpy.on('close', function (data) {
+            if (data != 1) {
+              document.getElementById(id).disabled = false
+              document.getElementById(id).innerHTML = idName
+            }
+          })
         }
       })
     }
-  })
-}
-  }catch(e){
+  } catch (e) {
     ipcRenderer.invoke('errorNoDecawifi').then(() => {
       document.getElementById(id).disabled = false
       document.getElementById(id).innerHTML = idName
